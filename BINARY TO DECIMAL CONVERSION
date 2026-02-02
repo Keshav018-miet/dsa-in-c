@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<math.h>
+int main(){
+    int num, sum=0,p=0,rem;
+    printf("enter num = ");
+    scanf("%d",&num);
+    int temp = num;
+    while(temp!=0){
+        int rem=temp%10;
+        temp=temp/10;
+        if (rem !=0 && rem !=1){
+        printf("invalid");
+        return 1;
+    }
+    else{
+        sum = sum +rem*pow(2,p);
+        p++;
+    }
+     
+    }
+   printf("%d",sum);
+    return 0;
+} 
