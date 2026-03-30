@@ -1,0 +1,37 @@
+#include <stdio.h> 
+#include <string.h>
+#include <math.h> 
+#include <stdlib.h> 
+#include <stdio.h>
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int arr[n];
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    int odd_score = 0;
+    int even_score = 0;
+    for(int i = 0; i < n; i += 2) {
+        int even_val = arr[i];
+        int odd_val = arr[i + 1];
+
+        if(odd_val > even_val) {
+            odd_score++;
+        } else if(even_val > odd_val) {
+            even_score++;
+        }
+    }
+    if(odd_score > even_score) {
+        printf("Odd\n");
+    } else if(even_score > odd_score) {
+        printf("Even\n");
+    } else {
+        printf("Tie\n");
+    }
+
+    return 0;
+}
