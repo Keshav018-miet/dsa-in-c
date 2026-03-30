@@ -1,0 +1,98 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+int stack[100];
+int top = -1;
+void push(int x) {
+    stack[++top] = x;
+}
+int pop() {
+    return stack[top--];
+}
+int isPalindrome(struct Node* head) {
+    struct Node* temp = head;
+    while(temp != NULL) {
+        push(temp->data);
+        temp = temp->next;
+    }
+    temp = head;
+    while(temp != NULL) {
+        if(temp->data != pop()) {
+            return 0;
+        }
+        temp = temp->next;
+    }
+
+    return 1;
+}
+struct Node* reverseList(struct Node* head) {
+    struct Node* prev = NULL;
+    struct Node* curr = head;
+    struct Node* next = NULL;
+
+    while(curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+void printList(struct Node* head) {
+    while(head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+}
+
+int main() {
+    int n, x;
+    scanf("%d", &n);
+
+    struct Node* head = NULL;
+    struct Node* temp = NULL;
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &x);
+        struct Node* newNode = createNode(x);
+
+        if(head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            temp = temp->next;
+        }
+    }
+
+    int result = isPalindrome(head);
+    struct Node* reversed = reverseList(head);
+
+    if(result) {
+        printf("Palindrome : ");
+    } else {
+        printf("Not Palindrome : ");
+    }
+
+    printList(reversed);
+
+    return 0;
+}
