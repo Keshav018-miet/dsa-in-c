@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_URL_LENGTH 100
+#define MAX_HISTORY 100
+
+typedef struct Node {
+    char url[MAX_URL_LENGTH];
+    struct Node* prev;
+    struct Node* next;
+} Node;
+
+Node* createNode(const char* url) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    strncpy(newNode->url, url, MAX_URL_LENGTH);
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void visit(Node** current, const char* url) {
+    Node* newNode = createNode(url);
+    if (*current) {
+        (*current)->next = newNode;
+        newNode->prev = *current;
+    }
+    *current = newNode;
+}
+
+void back(Node** current) {
+    if (*current && (*current)->prev) {
+        *current = (*current)->prev;
+    }
+}
+
+void forward(Node** current) {
+    if (*current && (*current)->next) {
+        *current = (*current)->next;
+    }
+}
+void printCurrent(Node* current) {
+    if (current) {
+        printf("%s\n", current->url);
+    }
+}
+
+int main() {
+    int Q;
+    scanf("%d", &Q);
+    Node* current = createNode("home.com");
+
+    for (int i = 0; i < Q; i++) {
+        char command[20];
+        scanf("%s", command);
+
+        if (strcmp(command, "VISIT") == 0) {
+            char url[MAX_URL_LENGTH];
+            scanf("%s", url);
+            visit(&current, url);
+        } else if (strcmp(command, "BACK") == 0) {
+            back(&current);
+            printCurrent(current);
+        } else if (strcmp(command, "FORWARD") == 0) {
+            forward(&current);
+            printCurrent(current);
+        } else if (strcmp(command, "CURRENT") == 0) {
+            printCurrent(current);
+        }
+    }
+
+    
+    while (current && current->prev) {
+        current = current->prev;
+        free(current->next);
+    }
+    free(current);
+
+    return 0;
+}
