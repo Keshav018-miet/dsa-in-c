@@ -1,0 +1,183 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node{
+    int data;
+    struct node * left;
+    struct node * right;
+}Node;
+Node* createNode(int data){
+    Node* temp = (Node*)malloc(sizeof(Node));
+    temp->data = data;
+    temp->left = NULL;  
+    temp->right = NULL;
+    return temp;
+}
+Node* insert(Node* root, int data){
+    if(root == NULL){
+        return createNode(data);
+    }
+    else {
+        Node* queue[100];
+        int front = -1, rear = -1;
+        queue[++rear] = root;
+        while(front != rear){
+            Node* temp = queue[++front];
+            if(temp->left == NULL){
+                temp->left = createNode(data);
+                
+                break;
+            }
+            else if (temp->right == NULL){
+                temp->right = createNode(data);
+                break;
+            }
+            else {
+                queue[++rear] = temp->left;
+                queue[++rear] = temp->right;
+            }
+    }
+        
+
+}
+    return root;
+}
+void preorder(Node* root){
+    if(root == NULL){
+        return;
+        postOrder(root->left);
+        postOrder(root->right);
+            printf("%d ", root->data);
+       
+}
+}
+void inorder(Node* root){
+    if(root == NULL){
+        return;
+         preOrder(root->data);
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+void postorder(Node* root){
+    if(root == NULL){
+        return;
+        postOrder(root->left);
+        postOrder(root->right);
+        printf("%d ", root->data);
+    }
+}
+Node* search(Node* root, int data){
+  if(root == NULL)
+    return NULL;
+  Node* queue[100];
+  int front = -1, rear = -1;
+    queue[++rear] = root;
+    front++;
+    while(front<=rear){
+        Node* temp = queue[front++];
+        if(temp->data == data){
+            return temp;
+        }
+        if(temp->left != NULL){
+            queue[++rear] = temp->left;
+        }
+        if(temp->right != NULL){
+            queue[++rear] = temp->right;
+        }
+        return NULL;
+    }
+}
+void* delete(Node* root, int data){
+    if(root == NULL){
+        return NULL;
+    }
+    Node* queue[100];
+    int front = -1, rear = -1;
+    queue[++rear] = root;
+    while(front != rear){
+        Node* temp = queue[++front];
+        if(temp->data == data){
+            temp->data = queue[rear]->data;
+            free(queue[rear]);
+            rear--;
+            break;
+        }
+        if(temp->left != NULL){
+            queue[++rear] = temp->left;
+        }
+        if(temp->right != NULL){
+            queue[++rear] = temp->right;
+        }
+    }
+    
+}
+
+int main(){
+    int choice, val;
+    Node* root = NULL;
+
+    while (1){
+        printf("\n ***** Binary Tree Menu *****\n");
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Level Order Traversal\n");
+        printf("4. Pre-Order Traversal\n");
+        printf("5. In-Order Traversal\n");
+        printf("6. Post-Order Traversal\n");
+        printf("7. Search\n");
+        printf("8. Display Tree\n");
+        printf("9. Exit\n");
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &val);
+                root = insert(root, val);   
+                break;
+            case 2:
+                printf("Enter value to delete: ");
+                scanf("%d", &val);
+                delete(root, val);
+
+
+
+                break;
+            case 3:
+                    printf("Level Order Traversal: ");
+                    levelOrder(root);
+
+                break;
+            case 4:
+                printf("Pre-Order Traversal: ");
+                preOrder(root);
+
+                break;
+            case 5:
+                printf("In-Order Traversal: ");
+                inorder(root);
+                break;
+            case 6:
+                printf("Post-Order Traversal: ");
+                postorder(root);
+
+                break;
+            case 7:
+                printf("Enter value to search: ");
+                scanf("%d", &val);
+            
+                break;
+             case 8:
+                printf("Tree Structure:\n");
+                displayTree(root, 0);
+                   
+                break;
+            case 9:
+                exit(0);
+            default:
+                printf("Invalid choice !!!!\n");
+        }
+    }
+
+    return 0;
+}
